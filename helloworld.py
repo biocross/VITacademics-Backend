@@ -46,7 +46,11 @@ class DetailsExtractor(webapp2.RequestHandler):
 				response2 = br1.submit()
 				details = BeautifulSoup(response2)
 				last = details("td")
-				self.response.write(last[len(last)-5].text)
+				lastArray = []
+				for i in range(19, len(last), 2):
+					lastArray.append(str(last[i].text))
+				lastArrayNew = filter (lambda a: a != "-", lastArray)
+				self.response.write(json.dumps(lastArrayNew))
 		
 
 class CaptchaGen(webapp2.RequestHandler):
@@ -147,9 +151,9 @@ class Marks(webapp2.RequestHandler):
 			br1.set_handle_equiv(True)
 			br1.set_handle_redirect(True)
 			br1.set_handle_referer(True)
-			r=br1.open('https://academics.vit.ac.in/parent/marks.asp?sem=FS')
+			r=br1.open('https://academics.vit.ac.in/parent/marks.asp?sem=WS')
 			br1.set_handle_robots(False)
-			if(r.geturl()=="https://academics.vit.ac.in/parent/marks.asp?sem=FS"):
+			if(r.geturl()=="https://academics.vit.ac.in/parent/marks.asp?sem=WS"):
 				page=r.read()
 				soup=BeautifulSoup(page)
 				tr=soup('tr', bgcolor="#EDEADE", height="40")
